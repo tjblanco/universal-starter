@@ -14,12 +14,12 @@ export class PreviewComponent implements OnInit {
     ngOnInit() {
     }
     previewLocalParticipant(): Promise<any> { // Preview LocalParticipant's Tracks.
+        this.twilio.log('Initializing camera...')
         const localTracksPromise = this.previewTracks ? Promise.resolve(this.previewTracks)
             : Video.createLocalTracks();
 
         return localTracksPromise
             .then((tracks: any): void => {
-                this.twilio.log('Initializing camera...')
                 (<any> window).previewTracks = this.previewTracks = tracks;
                 const previewContainer = document.getElementById('local-media');
                 if (!previewContainer.querySelector('video')) {
