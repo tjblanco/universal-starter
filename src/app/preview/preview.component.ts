@@ -19,11 +19,13 @@ export class PreviewComponent implements OnInit {
 
         return localTracksPromise
             .then((tracks: any): void => {
+                this.twilio.log('Initializing camera...')
                 (<any> window).previewTracks = this.previewTracks = tracks;
                 const previewContainer = document.getElementById('local-media');
                 if (!previewContainer.querySelector('video')) {
                     this.twilio.attachTracks(tracks, previewContainer);
                 }
+                this.twilio.log('...Done');
             }                )
             .catch((error: any): void => {
                 console.error('Unable to access local media', error);
