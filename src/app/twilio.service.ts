@@ -9,7 +9,6 @@ export class TwilioService implements OnDestroy {
     public activeRoom;
     public AccessToken;
     public VideoGrant;
-
     constructor() {
         this.getToken();
     }

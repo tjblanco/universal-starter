@@ -8,24 +8,31 @@ import { TwilioService } from '../twilio.service';
     styleUrls: ['./preview.component.css']
 })
 export class PreviewComponent implements OnInit {
-    previewTracks;
+    public previewTracks;
     public errorText: string;
     constructor(private twilio: TwilioService) { }
     ngOnInit() {
     }
-    previewLocalParticipant(event) {
-        const localTracksPromise = this.previewTracks
-            ? Promise.resolve(this.previewTracks)
+    previewLocalParticipant(): Promise<any> { // Preview LocalParticipant's Tracks.
+        const localTracksPromise = this.previewTracks ? Promise.resolve(this.previewTracks)
             : Video.createLocalTracks();
-        localTracksPromise.then(function(tracks) {
-            // window.previewTracks = this.previewTracks = tracks;
-            const previewContainer = document.getElementById('local-media');
-            if (!previewContainer.querySelector('video')) {
-                this.attachTracks(tracks, previewContainer);
-            }
-        }, function(error) {
-            console.error('Unable to access local media', error);
-            event.twilio.log('Unable to access Camera and Microphone');
-        });
+
+        return localTracksPromise
+            .then((tracks: any): void => {
+                (<any> window).previewTracks = this.previewTracks = tracks;
+                const previewContainer = document.getElementById('local-media');
+
+                if (!previewContainer.querySelector('video')) {
+                    this.twilio.attachTracks(tracks, previewContainer);
+                    this.twilio.log('ADD');
+                }
+                this.twilio.log('WORK');
+            }                )
+            .catch((error: any): void => {
+                console.error('Unable to access local media', error);
+                this.twilio.log('--Unable to access Camera and Microphone----');
+                this.twilio.log(JSON.stringify(error));
+            });
     }
 }
+
