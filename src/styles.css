@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+body, html {
+    font-family: Helvetica;
+}
+
+h1 {
+    font-weight: 100;
+    font-size: 2.5em;
+}
+
+p {
+    font-family: Helvetica-Light, Helvetica, sans-serif;
+    font-size: 0.9em;
+    line-height: 1em;
+    margin-left: 1em;
+    text-indent: -1.25em;
+    width: 90%;
+    color: #686865;
+}
