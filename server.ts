@@ -8,6 +8,7 @@ import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
 
 import * as express from 'express';
 import {join} from 'path';
+import * as twilio from 'twilio';
 
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
@@ -45,7 +46,36 @@ app.get('*', (req, res) => {
   res.render('index', { req });
 });
 
+// Twilio server
+const AccessToken = twilio.jwt.AccessToken;
+const VideoGrant = AccessToken.VideoGrant;
+
+app.get('/token', function(request, response) {
+    const identity = 'hey there';
+
+    // Create an access token which we will sign and return to the client,
+    // containing the grant we just created.
+    const token = new AccessToken(
+        'ACb502cdc5b1b17492802aed880cad0b22',
+        'SK0b750704beec9dba28891e9f75d0355f',
+        '3Cox8tqJSYghRSl2hLrNGpcIW3L4aMH6'
+    );
+
+    // Assign the generated identity to the token.
+    token.identity = identity;
+
+    // Grant the access token Twilio Video capabilities.
+    const grant = new VideoGrant();
+    token.addGrant(grant);
+    console.log(token);
+    // Serialize the token to a JWT string and include it in a JSON response.
+    response.send({
+        identity: identity,
+        token: token.toJwt()
+    });
+});
+
 // Start up the Node server
 app.listen(PORT, () => {
-  console.log(`Node Express server listening on http://localhost:${PORT}`);
+    console.log(`Node Express server listening on http://localhost:${PORT}`);
 });
