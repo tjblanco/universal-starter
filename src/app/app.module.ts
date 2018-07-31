@@ -1,5 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { TransferHttpCacheModule } from '@nguniversal/common';
@@ -18,10 +19,12 @@ import { RemoteMediaModule } from './remote-media/remote-media.module';
     BrowserModule.withServerTransition({appId: 'my-app'}),
     TransferHttpCacheModule,
     ControlsModule,
-    RemoteMediaModule
+    RemoteMediaModule,
+    HttpClientModule
   ],
   providers: [
-      TwilioService
+      TwilioService,
+      HttpClientModule
   ],
   bootstrap: [AppComponent]
 })

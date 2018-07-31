@@ -42,32 +42,30 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
 }));
 
 // All regular routes use the Universal engine
-app.get('*', (req, res) => {
-  res.render('index', { req });
+app.get('/', (req, res) => {
+    res.render('index', { req });
 });
 
 // Twilio server
 const AccessToken = twilio.jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
+const identity = 'hey there';
+// Create an access token which we will sign and return to the client,
+// containing the grant we just created.
+const token = new AccessToken(
+    'ACb502cdc5b1b17492802aed880cad0b22',
+    'SK0b750704beec9dba28891e9f75d0355f',
+    '3Cox8tqJSYghRSl2hLrNGpcIW3L4aMH6'
+);
+
+// Assign the generated identity to the token.
+token.identity = identity;
+
+// Grant the access token Twilio Video capabilities.
+const grant = new VideoGrant();
+token.addGrant(grant);
 
 app.get('/token', function(request, response) {
-    const identity = 'hey there';
-
-    // Create an access token which we will sign and return to the client,
-    // containing the grant we just created.
-    const token = new AccessToken(
-        'ACb502cdc5b1b17492802aed880cad0b22',
-        'SK0b750704beec9dba28891e9f75d0355f',
-        '3Cox8tqJSYghRSl2hLrNGpcIW3L4aMH6'
-    );
-
-    // Assign the generated identity to the token.
-    token.identity = identity;
-
-    // Grant the access token Twilio Video capabilities.
-    const grant = new VideoGrant();
-    token.addGrant(grant);
-    console.log(token);
     // Serialize the token to a JWT string and include it in a JSON response.
     response.send({
         identity: identity,
