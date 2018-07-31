@@ -9,6 +9,7 @@ import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
 import * as express from 'express';
 import {join} from 'path';
 import * as twilio from 'twilio';
+const randomName = require('./src/assets/randomname');
 
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
@@ -49,7 +50,7 @@ app.get('/', (req, res) => {
 // Twilio server
 const AccessToken = twilio.jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
-const identity = 'hey there';
+const identity = randomName();
 // Create an access token which we will sign and return to the client,
 // containing the grant we just created.
 const token = new AccessToken(

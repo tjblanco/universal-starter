@@ -3,16 +3,14 @@ import { Request } from 'express';
 import {HttpClient} from '@angular/common/http';
 import * as Video from 'twilio-video';
 
-
-
-// const API_URL = makeStateKey('/token');
 const API_URL = '/token';
+
 @Injectable()
 export class TwilioService implements OnDestroy {
     public previewTracks;
     public activeRoom;
     public roomName;
-    public data;
+    public identity;
     constructor(private  http:  HttpClient) { }
     ngOnDestroy() {
         if (this.activeRoom) {
@@ -54,6 +52,7 @@ export class TwilioService implements OnDestroy {
                     });
     }
     joinRoom(data, enviroment) {
+        this.identity = data.identity;
         document.getElementById('room-controls').style.display = 'block';
         this.roomName = ((document.getElementById('room-name') as HTMLInputElement).value) ;
         if (!this.roomName) {
@@ -77,8 +76,8 @@ export class TwilioService implements OnDestroy {
         });
     }
     roomJoined(room, enviroment) {
+        enviroment.log('Joined as "' + enviroment.identity + '"');
         (<any> window).room = enviroment.activeRoom = room;
-        console.log(room);
         document.getElementById('button-join').style.display = 'none';
         document.getElementById('button-leave').style.display = 'inline';
 
