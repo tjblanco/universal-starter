@@ -1,18 +1,14 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-    <nav class="nav">
-        <a
-                *ngFor="let item of nav"
-                [routerLink]="item.link"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: item.exact }"
-        >
-            {{ item.name }}
-        </a>
-    </nav>
     <router-outlet></router-outlet>
-    <!--<app-remote-media></app-remote-media>-->
-    <!--<app-preview></app-preview>-->
-    <!--<app-room-controls></app-room-controls>-->
-    <!--<app-log></app-log>-->
+        <nav class="nav">
+            <a
+                    *ngFor="let item of nav"
+                    [routerLink]="item.link"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: item.exact }"
+            >
+                {{ item.name }}
+            </a>
+        </nav>
 </div>

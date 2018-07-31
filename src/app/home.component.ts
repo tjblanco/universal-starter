@@ -9,5 +9,5 @@ import {Component} from '@angular/core';
     `
 })
 export class HomeComponent {
-    title = 'Twilio App';
+    title = 'Genetic counseling';
 }

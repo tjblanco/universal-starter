@@ -11,17 +11,22 @@ interface Nav {
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    title = 'Twilio App';
     nav: Nav[] = [
         {
-            link: '/',
-            name: 'Home',
-            exact: true
+            link: '/doctor',
+            name: 'Are you a doctor?',
+            exact: false
         },
         {
-            link: '/oops',
-            name: '404',
+            link: '/patient',
+            name: 'Are you a patient?',
             exact: false
         }
     ];
+    ngOnInit() {
+        const navs = document.getElementsByClassName('nav') as HTMLCollectionOf<HTMLElement>;
+        if (navs.length) {
+            navs[0].style.display = 'block';
+        }
+    }
 }
