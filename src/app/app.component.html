@@ -1,11 +1,15 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-    <a routerLink="/">
-        Home
-    </a>
-    <a routerLink="/oops">
-        404
-    </a>
+    <nav class="nav">
+        <a
+                *ngFor="let item of nav"
+                [routerLink]="item.link"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: item.exact }"
+        >
+            {{ item.name }}
+        </a>
+    </nav>
     <router-outlet></router-outlet>
     <!--<app-remote-media></app-remote-media>-->
     <!--<app-preview></app-preview>-->
