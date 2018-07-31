@@ -53,7 +53,6 @@ export class TwilioService implements OnDestroy {
     }
     joinRoom(data, enviroment) {
         this.identity = data.identity;
-        document.getElementById('room-controls').style.display = 'block';
         this.roomName = ((document.getElementById('room-name') as HTMLInputElement).value) ;
         if (!this.roomName) {
             alert('Please enter a room name.');
