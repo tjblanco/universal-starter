@@ -3,9 +3,11 @@ import {Component} from '@angular/core';
 @Component({
     selector: 'app-home',
     template: `
-        <div>
-            Twilio app
-        </div>
+        <h1>
+            {{ title }}
+        </h1>
     `
 })
-export class HomeComponent {}
+export class HomeComponent {
+    title = 'Twilio App';
+}
