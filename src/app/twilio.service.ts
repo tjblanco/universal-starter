@@ -29,6 +29,7 @@ export class TwilioService implements OnDestroy {
                     this.attachTracks(tracks, previewContainer);
                 }
                 this.log('...Done');
+                document.getElementById('button-preview').style.display = 'none';
             }                )
             .catch((error: any): void => {
                 console.error('Unable to access local media', error);
@@ -42,6 +43,7 @@ export class TwilioService implements OnDestroy {
     leaveRoom() {
         this.log('Leaving room...');
         this.activeRoom.disconnect();
+        document.getElementById('button-preview').style.display = 'block';
     }
     getToken (enviroment, roomName) {
         fetch('/token')

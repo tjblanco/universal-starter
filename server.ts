@@ -1,13 +1,13 @@
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
-import {enableProdMode} from '@angular/core';
+import { enableProdMode } from '@angular/core';
 // Express Engine
 import {ngExpressEngine} from '@nguniversal/express-engine';
 // Import module map for lazy loading
-import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
+import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
 import * as express from 'express';
-import {join} from 'path';
+import { join } from 'path';
 import * as twilio from 'twilio';
 const randomName = require('./src/assets/randomname');
 
@@ -33,9 +33,6 @@ app.engine('html', ngExpressEngine({
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
-
-// Example Express Rest API endpoints
-// app.get('/api/**', (req, res) => { });
 
 // Server static files from /browser
 app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
