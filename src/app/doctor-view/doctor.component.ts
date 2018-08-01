@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-home',
@@ -9,14 +9,4 @@ import {Component, OnInit} from '@angular/core';
         <app-log></app-log>
     `
 })
-export class DoctorComponent implements OnInit {
-    ngOnInit() {
-        this.hide();
-    }
-    hide() {
-        const navs = document.getElementsByClassName('nav') as HTMLCollectionOf<HTMLElement>;
-        if (navs.length) {
-            navs[0].style.display = 'none';
-        }
-    }
-}
+export class DoctorComponent {}
