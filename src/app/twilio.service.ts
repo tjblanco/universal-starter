@@ -9,7 +9,6 @@ const API_URL = '/token';
 export class TwilioService implements OnDestroy {
     public previewTracks;
     public activeRoom;
-    public roomName;
     public identity;
     constructor(private  http:  HttpClient) { }
     ngOnDestroy() {
@@ -37,30 +36,30 @@ export class TwilioService implements OnDestroy {
                 this.log(JSON.stringify(error));
             });
     }
-    connectRoom() {
-        this.getToken(this);
+    connectRoom(roomName) {
+        this.getToken(this, roomName);
     }
     leaveRoom() {
         this.log('Leaving room...');
         this.activeRoom.disconnect();
     }
-    getToken (enviroment) {
+    getToken (enviroment, roomName) {
         fetch('/token')
                     .then((data) =>  data.json())
                     .then(function(obj) {
-                        enviroment.joinRoom(obj, enviroment);
+                        enviroment.joinRoom(obj, enviroment, roomName);
                     });
     }
-    joinRoom(data, enviroment) {
+    joinRoom(data, enviroment, roomName) {
         this.identity = data.identity;
-        this.roomName = ((document.getElementById('room-name') as HTMLInputElement).value) ;
-        if (!this.roomName) {
+        // roomName = roomName ;
+        if (!roomName) {
             alert('Please enter a room name.');
             return;
         }
-        this.log('Joining room "' + this.roomName + '"...');
+        this.log('Joining room "' + roomName + '"...');
         const connectOptions = {
-            name: this.roomName,
+            name: roomName,
             logLevel: 'debug'
         };
 

@@ -1,6 +1,6 @@
 <div id="room-controls">
     <p class="instructions">Room Name:</p>
-    <input id="room-name" type="text" placeholder="Enter a room name" />
-    <button id="button-join" (click)="joinRoom()">Join Room</button>
+    <input #roomName id="room-name" type="text" placeholder="Enter a room name" />
+    <button id="button-join" (click)="joinRoom(roomName.value)">Join Room</button>
     <button id="button-leave" (click)="leaveRoom()">Leave Room</button>
 </div>

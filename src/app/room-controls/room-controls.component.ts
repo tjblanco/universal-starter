@@ -9,8 +9,8 @@ import { TwilioService } from '../twilio.service';
 })
 export class RoomControlsComponent {
     constructor(private twilio: TwilioService) {}
-    joinRoom() {
-        this.twilio.connectRoom();
+    joinRoom(roomName) {
+        this.twilio.connectRoom(roomName);
     }
     leaveRoom() {
         this.twilio.leaveRoom();
