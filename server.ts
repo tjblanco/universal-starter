@@ -46,10 +46,6 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
 app.get('/', (req, res) => {
     res.render('index', { req });
 });
-// All regular routes use the Universal engine
-app.get('/*', (req, res) => {
-    res.render('index', { req });
-});
 
 app.get('/token', function(request, response) {
     // Twilio server
@@ -76,7 +72,9 @@ app.get('/token', function(request, response) {
         token: token.toJwt()
     });
 });
-
+app.get('/*', (req, res) => {
+    res.render('index', { req });
+});
 // Start up the Node server
 app.listen(PORT, () => {
     console.log(`Node Express server listening on http://localhost:${PORT}`);
