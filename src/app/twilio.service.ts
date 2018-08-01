@@ -17,7 +17,7 @@ export class TwilioService implements OnDestroy {
         }
     }
     previewLocalParticipant(): Promise<any> { // Preview LocalParticipant's Tracks.
-        this.log('Initializing camera...')
+        this.log('Initializing camera...');
         const localTracksPromise = this.previewTracks ? Promise.resolve(this.previewTracks)
             : Video.createLocalTracks();
 
@@ -45,14 +45,14 @@ export class TwilioService implements OnDestroy {
         this.activeRoom.disconnect();
         document.getElementById('button-preview').style.display = 'block';
     }
-    getToken (enviroment, roomName) {
+    getToken (environment, roomName) {
         fetch('/token')
                     .then((data) =>  data.json())
                     .then(function(obj) {
-                        enviroment.joinRoom(obj, enviroment, roomName);
+                        environment.joinRoom(obj, environment, roomName);
                     });
     }
-    joinRoom(data, enviroment, roomName) {
+    joinRoom(data, environment, roomName) {
         this.identity = data.identity;
         // roomName = roomName ;
         if (!roomName) {
@@ -71,13 +71,13 @@ export class TwilioService implements OnDestroy {
 
         // Join the Room with the token from the server and the
         // LocalParticipant's Tracks.
-        Video.connect(data.token, connectOptions).then((room) => this.roomJoined(room, enviroment), function(error) {
+        Video.connect(data.token, connectOptions).then((room) => this.roomJoined(room, environment), function(error) {
             this.log('Could not connect to Twilio: ' + error.message);
         });
     }
-    roomJoined(room, enviroment) {
-        enviroment.log('Joined as "' + enviroment.identity + '"');
-        (<any> window).room = enviroment.activeRoom = room;
+    roomJoined(room, environment) {
+        environment.log('Joined as "' + environment.identity + '"');
+        (<any> window).room = environment.activeRoom = room;
         document.getElementById('button-join').style.display = 'none';
         document.getElementById('button-leave').style.display = 'inline';
 
@@ -85,52 +85,52 @@ export class TwilioService implements OnDestroy {
         // Attach LocalParticipant's Tracks, if not already attached.
         const previewContainer = document.getElementById('local-media');
         if (!previewContainer.querySelector('video')) {
-            enviroment.attachParticipantTracks(room.localParticipant, previewContainer);
+            environment.attachParticipantTracks(room.localParticipant, previewContainer);
         }
 
         // Attach the Tracks of the Room's Participants.
         room.participants.forEach(function(participant) {
-            enviroment.log('Already in Room: "' + participant.identity + '"');
+            environment.log('Already in Room: "' + participant.identity + '"');
             const previewContainer = document.getElementById('remote-media');
-            enviroment.attachParticipantTracks(participant, previewContainer);
+            environment.attachParticipantTracks(participant, previewContainer);
         });
 
         // When a Participant joins the Room, log the event.
         room.on('participantConnected', function(participant) {
-            enviroment.log('Joining: "' + participant.identity + '"');
+            environment.log('Joining: "' + participant.identity + '"');
         });
 
         // When a Participant adds a Track, attach it to the DOM.
         room.on('trackAdded', function(track, participant) {
-            enviroment.log(participant.identity + ' added track: ' + track.kind);
+            environment.log(participant.identity + ' added track: ' + track.kind);
             const previewContainer = document.getElementById('remote-media');
-            enviroment.attachTracks([track], previewContainer);
+            environment.attachTracks([track], previewContainer);
         });
 
         // When a Participant removes a Track, detach it from the DOM.
         room.on('trackRemoved', function(track, participant) {
-            enviroment.log(participant.identity + ' removed track: ' + track.kind);
-            enviroment.detachTracks([track]);
+            environment.log(participant.identity + ' removed track: ' + track.kind);
+            environment.detachTracks([track]);
         });
 
         // When a Participant leaves the Room, detach its Tracks.
         room.on('participantDisconnected', function(participant) {
-            enviroment.log('Participant "' + participant.identity + '" left the room');
-            enviroment.detachParticipantTracks(participant);
+            environment.log('Participant "' + participant.identity + '" left the room');
+            environment.detachParticipantTracks(participant);
         });
 
         // Once the LocalParticipant leaves the room, detach the Tracks
         // of all Participants, including that of the LocalParticipant.
         room.on('disconnected', function() {
-            enviroment.log('Left');
-            if (enviroment.previewTracks) {
-                enviroment.previewTracks.forEach(function(track) {
+            environment.log('Left');
+            if (environment.previewTracks) {
+                environment.previewTracks.forEach(function(track) {
                     track.stop();
                 });
             }
-            enviroment.detachParticipantTracks(room.localParticipant);
-            room.participants.forEach(enviroment.detachParticipantTracks);
-            enviroment.activeRoom = null;
+            environment.detachParticipantTracks(room.localParticipant);
+            room.participants.forEach(environment.detachParticipantTracks);
+            environment.activeRoom = null;
             document.getElementById('button-join').style.display = 'inline';
             document.getElementById('button-leave').style.display = 'none';
         });
