@@ -20,14 +20,14 @@ export class TwilioService implements OnDestroy {
         this.log('Initializing camera...');
         const localTracksPromise = this.previewTracks ? Promise.resolve(this.previewTracks)
             : Video.createLocalTracks();
-
+        // const localTracksPromise = Promise.resolve(this.previewTracks);
         return localTracksPromise
             .then((tracks: any): void => {
                 (<any> window).previewTracks = this.previewTracks = tracks;
                 const previewContainer = document.getElementById('local-media');
-                if (!previewContainer.querySelector('video')) {
+                // if (!previewContainer.querySelector('video')) {
                     this.attachTracks(tracks, previewContainer);
-                }
+                // }
                 this.log('...Done');
                 document.getElementById('button-preview').style.display = 'none';
             }                )
@@ -42,8 +42,9 @@ export class TwilioService implements OnDestroy {
     }
     leaveRoom() {
         this.log('Leaving room...');
+        console.log(this.activeRoom);
         this.activeRoom.disconnect();
-        document.getElementById('button-preview').style.display = 'block';
+        document.getElementById('button-preview').style.display = 'inline-block';
     }
     getToken (environment, roomName) {
         fetch('/token')
@@ -54,7 +55,6 @@ export class TwilioService implements OnDestroy {
     }
     joinRoom(data, environment, roomName) {
         this.identity = data.identity;
-        // roomName = roomName ;
         if (!roomName) {
             alert('Please enter a room name.');
             return;
@@ -76,8 +76,8 @@ export class TwilioService implements OnDestroy {
         });
     }
     roomJoined(room, environment) {
-        environment.log('Joined as "' + environment.identity + '"');
         (<any> window).room = environment.activeRoom = room;
+        environment.log('Joined as "' + environment.identity + '"');
         document.getElementById('button-join').style.display = 'none';
         document.getElementById('button-leave').style.display = 'inline';
 
@@ -85,6 +85,7 @@ export class TwilioService implements OnDestroy {
         // Attach LocalParticipant's Tracks, if not already attached.
         const previewContainer = document.getElementById('local-media');
         if (!previewContainer.querySelector('video')) {
+            environment.log('Preview container does not have video inside');
             environment.attachParticipantTracks(room.localParticipant, previewContainer);
         }
 
@@ -124,9 +125,10 @@ export class TwilioService implements OnDestroy {
         room.on('disconnected', function() {
             environment.log('Left');
             if (environment.previewTracks) {
-                environment.previewTracks.forEach(function(track) {
-                    track.stop();
-                });
+                environment.previewTracks = undefined;
+                // environment.previewTracks.forEach(function(track) {
+                //     track.stop();
+                // });
             }
             environment.detachParticipantTracks(room.localParticipant);
             room.participants.forEach(environment.detachParticipantTracks);
