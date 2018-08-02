@@ -8,8 +8,14 @@ import { TwilioService } from '../twilio.service';
 })
 export class PreviewComponent {
     public errorText: string;
-    constructor(private twilio: TwilioService) {}
+    styles: object;
+
+    constructor(private twilio: TwilioService) {
+        this.styles = {
+            display: 'inline-block'
+        };
+    }
     previewLocalParticipant() {
-        this.twilio.previewLocalParticipant();
+        this.twilio.previewLocalParticipant().then(() => this.styles['display'] = 'none');
     }
 }

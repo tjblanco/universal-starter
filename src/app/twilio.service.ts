@@ -7,9 +7,9 @@ const API_URL = '/token';
 
 @Injectable()
 export class TwilioService implements OnDestroy {
-    public previewTracks;
-    public activeRoom;
-    public identity;
+    previewTracks;
+    activeRoom;
+    identity;
     constructor(private  http:  HttpClient) { }
     ngOnDestroy() {
         if (this.activeRoom) {
@@ -20,16 +20,14 @@ export class TwilioService implements OnDestroy {
         this.log('Initializing camera...');
         const localTracksPromise = this.previewTracks ? Promise.resolve(this.previewTracks)
             : Video.createLocalTracks();
-        // const localTracksPromise = Promise.resolve(this.previewTracks);
         return localTracksPromise
             .then((tracks: any): void => {
                 (<any> window).previewTracks = this.previewTracks = tracks;
                 const previewContainer = document.getElementById('local-media');
-                // if (!previewContainer.querySelector('video')) {
+                if (!previewContainer.querySelector('video')) {
                     this.attachTracks(tracks, previewContainer);
-                // }
+                }
                 this.log('...Done');
-                document.getElementById('button-preview').style.display = 'none';
             }                )
             .catch((error: any): void => {
                 console.error('Unable to access local media', error);
@@ -42,7 +40,6 @@ export class TwilioService implements OnDestroy {
     }
     leaveRoom() {
         this.log('Leaving room...');
-        console.log(this.activeRoom);
         this.activeRoom.disconnect();
         document.getElementById('button-preview').style.display = 'inline-block';
     }
@@ -71,8 +68,8 @@ export class TwilioService implements OnDestroy {
 
         // Join the Room with the token from the server and the
         // LocalParticipant's Tracks.
-        Video.connect(data.token, connectOptions).then((room) => this.roomJoined(room, environment), function(error) {
-            this.log('Could not connect to Twilio: ' + error.message);
+        Video.connect(data.token, connectOptions).then((room) => this.roomJoined(room, environment), function(error, environment) {
+            environment.log('Could not connect to Twilio: ' + error.message);
         });
     }
     roomJoined(room, environment) {
@@ -85,7 +82,7 @@ export class TwilioService implements OnDestroy {
         // Attach LocalParticipant's Tracks, if not already attached.
         const previewContainer = document.getElementById('local-media');
         if (!previewContainer.querySelector('video')) {
-            environment.log('Preview container does not have video inside');
+            document.getElementById('button-preview').style.display = 'inline-block';
             environment.attachParticipantTracks(room.localParticipant, previewContainer);
         }
 

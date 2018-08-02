@@ -1,9 +1,9 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import {RouterModule, Routes} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { TransferHttpCacheModule } from '@nguniversal/common';
-
+import { FormsModule } from '@angular/forms';
 // Services
 import { TwilioService } from './twilio.service';
 
@@ -36,7 +36,8 @@ const routes: Routes = [
     ControlsModule,
     RemoteMediaModule,
     HttpClientModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    FormsModule
   ],
   providers: [
       TwilioService,
