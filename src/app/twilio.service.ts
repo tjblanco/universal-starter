@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Request } from 'express';
-import { HttpClient } from '@angular/common/http';
 import * as Video from 'twilio-video';
 
 const API_URL = '/token';
@@ -9,8 +8,8 @@ const API_URL = '/token';
 export class TwilioService implements OnDestroy {
     previewTracks;
     activeRoom;
-    identity;
-    constructor(private  http:  HttpClient) { }
+    identity: string;
+    constructor() { }
     ngOnDestroy() {
         if (this.activeRoom) {
             this.activeRoom.disconnect();
@@ -44,11 +43,11 @@ export class TwilioService implements OnDestroy {
         document.getElementById('button-preview').style.display = 'inline-block';
     }
     getToken (environment, roomName) {
-        fetch('/token')
-                    .then((data) =>  data.json())
-                    .then(function(obj) {
-                        environment.joinRoom(obj, environment, roomName);
-                    });
+        fetch(API_URL)
+            .then((data) =>  data.json())
+            .then(function(obj) {
+                environment.joinRoom(obj, environment, roomName);
+            });
     }
     joinRoom(data, environment, roomName) {
         this.identity = data.identity;
@@ -77,7 +76,6 @@ export class TwilioService implements OnDestroy {
         environment.log('Joined as "' + environment.identity + '"');
         document.getElementById('button-join').style.display = 'none';
         document.getElementById('button-leave').style.display = 'inline';
-
 
         // Attach LocalParticipant's Tracks, if not already attached.
         const previewContainer = document.getElementById('local-media');
@@ -130,7 +128,7 @@ export class TwilioService implements OnDestroy {
                 // });
             }
             environment.detachParticipantTracks(room.localParticipant, environment);
-            room.participants.forEach((participant) => environment.detachParticipantTracks(participant,environment));
+            room.participants.forEach((participant) => environment.detachParticipantTracks(participant, environment));
             environment.activeRoom = null;
             document.getElementById('button-join').style.display = 'inline';
             document.getElementById('button-leave').style.display = 'none';
