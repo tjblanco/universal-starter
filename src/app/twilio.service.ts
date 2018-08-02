@@ -1,6 +1,6 @@
-import {Injectable, OnDestroy, PLATFORM_ID, Inject} from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Request } from 'express';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import * as Video from 'twilio-video';
 
 const API_URL = '/token';
@@ -117,7 +117,7 @@ export class TwilioService implements OnDestroy {
         // When a Participant leaves the Room, detach its Tracks.
         room.on('participantDisconnected', function(participant) {
             environment.log('Participant "' + participant.identity + '" left the room');
-            environment.detachParticipantTracks(participant);
+            environment.detachParticipantTracks(participant, environment);
         });
 
         // Once the LocalParticipant leaves the room, detach the Tracks
@@ -132,8 +132,8 @@ export class TwilioService implements OnDestroy {
                 //     track.stop();
                 // });
             }
-            environment.detachParticipantTracks(room.localParticipant);
-            room.participants.forEach(environment.detachParticipantTracks);
+            environment.detachParticipantTracks(room.localParticipant, environment);
+            room.participants.forEach((participant) => environment.detachParticipantTracks(participant,environment));
             environment.activeRoom = null;
             document.getElementById('button-join').style.display = 'inline';
             document.getElementById('button-leave').style.display = 'none';
@@ -155,9 +155,9 @@ export class TwilioService implements OnDestroy {
             });
         });
     }
-    detachParticipantTracks(participant) {
+    detachParticipantTracks(participant, environment) {
         const tracks = Array.from(participant.tracks.values());
-        this.detachTracks(tracks);
+        environment.detachTracks(tracks);
     }
     log(message) {
         const logDiv = document.getElementById('log');
