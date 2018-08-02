@@ -126,6 +126,8 @@ export class TwilioService implements OnDestroy {
             environment.log('Left');
             if (environment.previewTracks) {
                 environment.previewTracks = undefined;
+                // To stop the video/audio
+                // TODO: add play/pause video/audio button
                 // environment.previewTracks.forEach(function(track) {
                 //     track.stop();
                 // });
