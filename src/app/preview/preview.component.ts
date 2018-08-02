@@ -3,19 +3,28 @@ import { TwilioService } from '../twilio.service';
 
 @Component({
     selector: 'app-preview',
-    templateUrl: './preview.component.html',
+    template: `
+        <div id="preview">
+            <div id="local-media"></div>
+            <button id="button-preview" (click)="previewLocalParticipant()">
+                Preview My Camera
+            </button>
+        </div>
+    `,
     styleUrls: ['./preview.component.css']
 })
 export class PreviewComponent {
-    public errorText: string;
-    styles: object;
+    // styles: object;
 
     constructor(private twilio: TwilioService) {
-        this.styles = {
-            display: 'inline-block'
-        };
+        // this.styles = {
+        //     display: 'inline-block'
+        // };
     }
     previewLocalParticipant() {
-        this.twilio.previewLocalParticipant().then(() => this.styles['display'] = 'none');
+        // function hiddebutton() {
+        //     environment.styles.display = 'none';
+        // }
+        this.twilio.previewLocalParticipant();
     }
 }

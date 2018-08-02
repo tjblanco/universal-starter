@@ -27,6 +27,7 @@ export class TwilioService implements OnDestroy {
                     this.attachTracks(tracks, previewContainer);
                 }
                 this.log('...Done');
+                document.getElementById('button-preview').style.display = 'none';
             }                )
             .catch((error: any): void => {
                 console.error('Unable to access local media', error);
@@ -80,7 +81,6 @@ export class TwilioService implements OnDestroy {
         // Attach LocalParticipant's Tracks, if not already attached.
         const previewContainer = document.getElementById('local-media');
         if (!previewContainer.querySelector('video')) {
-            document.getElementById('button-preview').style.display = 'inline-block';
             environment.attachParticipantTracks(room.localParticipant, previewContainer);
         }
 
