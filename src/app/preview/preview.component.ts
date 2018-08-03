@@ -14,17 +14,8 @@ import { TwilioService } from '../twilio.service';
     styleUrls: ['./preview.component.css']
 })
 export class PreviewComponent {
-    // styles: object;
-
-    constructor(private twilio: TwilioService) {
-        // this.styles = {
-        //     display: 'inline-block'
-        // };
-    }
+    constructor(private twilio: TwilioService) {}
     previewLocalParticipant() {
-        // function hiddebutton() {
-        //     environment.styles.display = 'none';
-        // }
         this.twilio.previewLocalParticipant();
     }
 }
